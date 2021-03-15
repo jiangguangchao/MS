@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/ms?useUnicode=true&characterEncoding=utf8
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
+    password: jgc
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.main.bean
 
 server:
   port: 8090

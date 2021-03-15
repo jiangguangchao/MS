@@ -1,6 +1,12 @@
 package com.main.control;
 
+import com.main.bean.User;
+import com.main.dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -12,8 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginCtrl {
 
+    @Autowired
+    private UserDao dao;
+
     @RequestMapping("/login")
-    public String login(){
-        return "login success,ok111";
+    public String login(@RequestBody User user){
+
+        System.out.println(user);
+        if (user == null || !StringUtils.hasText(user.getUserId())) {
+            return "请输入用户名";
+        }
+
+        User u = dao.findUserById(user.getUserId());
+        if (u == null || !u.getPassword().equals(user.getPassword())) {
+            return "用户名或者密码错误";
+        }
+
+        return "success";
     }
 }
