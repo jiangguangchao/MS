@@ -14,6 +14,13 @@
         <result column="createTime" property="createTime" />
     </resultMap>
 
+    <resultMap id="orderDtoResult" type="com.main.dto.FOrderDTO" extends="orderResult">
+        <result column="name" property="name" />
+        <result column="mobile1" property="mobile1" />
+        <result column="mobile2" property="mobile2" />
+        <result column="address" property="address" />
+    </resultMap>
+
     <select id="findOrderById" parameterType="String" resultMap="orderResult">
         SELECT orderId,
             customerId,
@@ -42,4 +49,50 @@
             createTime
         FROM f_order
     </select>
+
+    <select id="findOrderDTO" parameterType="com.main.dto.FOrderDTO" resultMap="orderDtoResult">
+        SELECT orderId,
+            customerId,
+            orderTime,
+            furniture,
+            totalAmount,
+            frontMoney,
+            payTime,
+            deliverTime,
+            state,
+            o.createTime,
+            name,
+            mobile1,
+            mobile2,
+            address
+        FROM f_order o, customer c
+        where o.customerId = c.id
+        <if test="orderId != null and orderId != '' ">
+          and orderId = #{orderId}
+        </if>
+        <if test="name != null and name != '' ">
+            and name = #{name}
+        </if>
+        <if test="state != null and state != '' ">
+            and state = #{state}
+        </if>
+        <if test="mobile1 != null and mobile1 != '' ">
+            and mobile1 = #{mobile1}
+        </if>
+        <if test="address != null and address != '' ">
+            and address = #{address}
+        </if>
+
+    </select>
+
+    <update id="modifyOrder" parameterType="com.main.dto.FOrderDTO" >
+        update f_order
+        set furniture = #{furniture}
+        , totalAmount = #{totalAmount}
+        , frontMoney = #{frontMoney}
+        , payTime = #{payTime}
+        , deliverTime = #{deliverTime}
+        , state = #{state}
+        where orderId = #{orderId}
+    </update>
 </mapper>
