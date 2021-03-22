@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.main.dao.MenuDao">
+    <resultMap id="menuResult" type="com.main.dto.MenuDTO">
+        <result column="menuId" property="menuId" />
+        <result column="menuName" property="menuName" />
+        <result column="url" property="url" />
+        <result column="state" property="state" />
+        <result column="createTime" property="createTime" />
+        <collection property="subMenuList" ofType="com.main.bean.SubMenu"
+                    resultMap="subMenuResult"></collection>
+
+    </resultMap>
+
+
+    <resultMap id="subMenuResult" type="com.main.bean.SubMenu">
+        <result column="subMenuId" property="subMenuId" />
+        <result column="parentId" property="parentId" />
+        <result column="subMenuName" property="subMenuName" />
+        <result column="suburl" property="url" />
+        <result column="substate" property="state" />
+        <result column="subcreateTime" property="createTime" />
+    </resultMap>
+
+
+    <select id="findMenus" resultMap="menuResult">
+        SELECT menuId,
+            menuName,
+            m.url,
+            m.state,
+            m.createTime,
+            subMenuId,
+            parentId,
+            subMenuName,
+            s.url suburl,
+            s.state substate,
+            s.createTime subcreateTime
+        FROM menu m left join submenu s
+        on m.menuId = s.parentId
+    </select>
+
+</mapper>
