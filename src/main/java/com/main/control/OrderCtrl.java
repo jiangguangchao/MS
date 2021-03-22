@@ -22,7 +22,7 @@ public class OrderCtrl {
     @Autowired
     public FOrderdao orderDao;
 
-    @RequestMapping("/forder")
+    @RequestMapping("/order")
     @ResponseBody
     public Result findOrder() {
         Result result = new Result();
@@ -45,7 +45,7 @@ public class OrderCtrl {
 
     }
 
-    @RequestMapping("/forder/query")
+    @RequestMapping("/order/query")
     public Result queryOrderList(@RequestBody FOrderDTO orderQuery ) {
         Result result = new Result();
         result.setCode("01");
@@ -67,7 +67,7 @@ public class OrderCtrl {
 
     }
 
-    @RequestMapping("/forder/detail/{orderId}")
+    @RequestMapping("/order/detail/{orderId}")
     public Result getOrderDetail(@PathVariable(name="orderId") Integer orderId) {
         Result result = new Result();
         result.setCode("01");
@@ -81,7 +81,7 @@ public class OrderCtrl {
         return this.queryOrderList(orderDTO);
     }
 
-    @RequestMapping("/forder/modify")
+    @RequestMapping("/order/modify")
     public Result modifyOrder(@RequestBody FOrderDTO order) {
         Result result = new Result();
         result.setCode("01");
