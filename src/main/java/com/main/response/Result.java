@@ -12,7 +12,7 @@ import java.util.Map;
  * @create:2021-03-17 09:26
  */
 public class Result implements Serializable {
-    private String code;
+    private String code;//00:正常，01：异常，05：当前用户未登录
     private String message;
     private Map<String, Object> data = new HashMap<String, Object>();
 

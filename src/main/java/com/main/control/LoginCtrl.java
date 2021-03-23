@@ -2,6 +2,7 @@ package com.main.control;
 
 import com.main.bean.User;
 import com.main.dao.UserDao;
+import com.main.response.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +36,13 @@ public class LoginCtrl {
         }
 
         return "success";
+    }
+
+    @RequestMapping("/noLogin")
+    public Result noLogin() {
+        Result result = new Result();
+        result.setCode("05");
+        result.setMessage("请先登录");
+        return result;
     }
 }
