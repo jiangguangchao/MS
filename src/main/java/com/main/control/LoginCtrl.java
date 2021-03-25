@@ -3,12 +3,16 @@ package com.main.control;
 import com.main.bean.User;
 import com.main.dao.UserDao;
 import com.main.response.Result;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * @description:
@@ -23,19 +27,29 @@ public class LoginCtrl {
     private UserDao dao;
 
     @RequestMapping("/login")
-    public String login(@RequestBody User user){
+    public Result login(@RequestBody User user){
+        Result result = new Result();
+        result.setCode("01");
+        result.setMessage("登录失败");
 
         System.out.println(user);
         if (user == null || !StringUtils.hasText(user.getUserId())) {
-            return "请输入用户名";
+            result.setMessage("请输入用户名");
+            return result;
         }
 
-        User u = dao.findUserById(user.getUserId());
-        if (u == null || !u.getPassword().equals(user.getPassword())) {
-            return "用户名或者密码错误";
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getUserId(), user.getPassword());
+            subject.login(token);
+            result.setCode("00");
+            result.setMessage("登录成功");
+        } catch(Exception e){
+            System.out.println("登录认证失败，用户名或者密码错误");
+            result.setMessage("登录认证失败，用户名或者密码错误");
         }
 
-        return "success";
+        return result;
     }
 
     @RequestMapping("/noLogin")
