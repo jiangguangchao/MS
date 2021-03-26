@@ -1,14 +1,13 @@
 package com.main.config;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.ShiroFilter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,13 +33,16 @@ public class ShrioConfig {
                 perms  拥有对某个用户资源才能访问
                 role   拥有某个角色权限才能访问
          */
-        Map<String, Filter> filterMap = new LinkedHashMap<String, Filter>();
-        filterMap.put("authc", new MyFormAuthenticationFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
+        Map<String, Filter> filters = new HashMap<String, Filter>();
+        filters.put("authc",new CustomeAuthorizationFilter());
+        shiroFilterFactoryBean.setFilters(filters);
 
-        ConcurrentHashMap<String,String>  map = new ConcurrentHashMap<String, String>();
-        map.put("/order","authc");
+        Map<String,String> map = new LinkedHashMap<String, String>();
+        map.put("/login","anon");
+        map.put("/noLogin", "anon");
+        map.put("/**","authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
+
 
         return shiroFilterFactoryBean;
     }
