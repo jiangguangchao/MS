@@ -49,11 +49,13 @@ public class CustomeAuthorizationFilter extends AuthorizationFilter{
         System.out.println("origin:" + req.getHeader("Origin"));
         System.out.println("cookies:" + req.getCookies());
         System.out.println("Header(cookies):" + req.getHeader("Cookie"));
+        System.out.println("Access-Control-Allow-Headers:" + req.getHeader("Access-Control-Allow-Headers"));
 
         HttpServletResponse resp = (HttpServletResponse) response;
         resp.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
+        resp.setHeader("Access-Control-Allow-Methods", req.getMethod());
         resp.setHeader("Access-Control-Allow-Credentials", "true");
-        resp.setHeader("Content-Type", "text/html; character=utf-8");
+        resp.setHeader("Access-Control-Allow-Headers","Content-Type");
         return super.preHandle(request, response);
     }
 }
