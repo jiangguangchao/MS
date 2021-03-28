@@ -60,6 +60,15 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("当前登录用户：" + loginUser);
 
+        //如果当前用户是管理员角色，则显示所有菜单，即管理员可以查看所有菜单
+        List<MenuDTO> menuDTOList = null;
+        if(loginUser.getRole() == 1) {
+            menuDTOList = menuService.findMenus();
+            return menuDTOList;
+        }
+
+        //其他角色根据配置加载
+
         /*
         查找当前登录用户所拥有的菜单编号，这里的菜单编号有一级菜单编号
         和二级菜单编号，给角色配置菜单，正常情况下只需要配置二级编号。
@@ -75,7 +84,7 @@ public class UserServiceImpl implements UserService {
         一级和二级编号区分开，放入两个list中，一级编号长度是2位，二
         级编号是4位，根据位数进行划分。先测试在menu.xml中进行区分
          */
-        List<MenuDTO> menuDTOList = menuService.findMenusByMenuId(menuIdList);
+        menuDTOList = menuService.findMenusByMenuId(menuIdList);
 
         return menuDTOList;
     }
