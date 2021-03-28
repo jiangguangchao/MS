@@ -9,7 +9,7 @@ public class User {
 
     private String userId;
     private String password;
-    private String role;
+    private Integer role;
     private String state;
 
     public String getUserId() {
@@ -28,11 +28,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 
