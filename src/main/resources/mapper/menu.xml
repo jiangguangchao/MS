@@ -39,4 +39,38 @@
         on m.menuId = s.parentId
     </select>
 
+
+    <!--根据给定的一级菜单编号和二级菜单编号，查出相应的一级菜单和二级菜单
+    因为有些一级菜单（比如首页）没有子菜单（二级菜单），所有给角色配置菜单时，
+    只能配一级菜单编号。-->
+    <select id="findMenusByMenuId" resultMap="menuResult">
+        SELECT menuId,
+        menuName,
+        m.url,
+        m.state,
+        m.createTime,
+        subMenuId,
+        parentId,
+        subMenuName,
+        s.url suburl,
+        s.state substate,
+        s.createTime subcreateTime
+        FROM menu m left join submenu s
+        on m.menuId = s.parentId
+        where menuId in
+        <foreach collection="menuIds" item="menuIdd"
+                 open="(" close=")" separator=",">
+            <if test="menuIdd.length == 2">
+              #{menuIdd}
+            </if>
+        </foreach>
+        or subMenuId in
+        <foreach collection="menuIds" item="subMenuId"
+                 open="(" close=")" separator=",">
+            <if test="subMenuId.length == 4">
+                #{subMenuId}
+            </if>
+        </foreach>
+    </select>
+
 </mapper>

@@ -23,7 +23,6 @@ public class MenuCtrl {
     @Autowired
     private MenuDao menuDao;
 
-    @RequestMapping("/menu")
     public Result findMenus () {
         Result result = new Result();
         result.setCode("01");
